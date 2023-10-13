@@ -10243,8 +10243,18 @@ bool32 CanMegaEvolve(u32 battler)
     species = GetMonData(mon, MON_DATA_SPECIES);
     itemId = GetMonData(mon, MON_DATA_HELD_ITEM);
 
+<<<<<<< HEAD
     if (itemId == ITEM_ENIGMA_BERRY_E_READER)
         holdEffect = gEnigmaBerries[battler].holdEffect;
+=======
+#if DEBUG_BATTLE_MENU == TRUE
+    if (gBattleStruct->debugHoldEffects[battlerId])
+        holdEffect = gBattleStruct->debugHoldEffects[battlerId];
+    else
+#endif
+    if (itemId == ITEM_ENIGMA_BERRY_E_READER)
+        holdEffect = gEnigmaBerries[battlerId].holdEffect;
+>>>>>>> 13fdd2c8d... papi menu
     else
         holdEffect = ItemId_GetHoldEffect(itemId);
 
@@ -10257,7 +10267,11 @@ bool32 CanMegaEvolve(u32 battler)
     }
 
     // Check if there is an entry in the evolution table for Wish Mega Evolution.
+<<<<<<< HEAD
     if (GetBattleFormChangeTargetSpecies(battler, FORM_CHANGE_BATTLE_MEGA_EVOLUTION_MOVE) != SPECIES_NONE)
+=======
+    if (GetBattleFormChangeTargetSpecies(battlerId, FORM_CHANGE_BATTLE_MEGA_EVOLUTION_MOVE) != SPECIES_NONE)
+>>>>>>> 13fdd2c8d... papi menu
     {
         // Can't Wish Mega Evolve if holding a Z Crystal.
         if (holdEffect != HOLD_EFFECT_Z_CRYSTAL)
