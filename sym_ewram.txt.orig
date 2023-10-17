@@ -149,10 +149,10 @@
 	.include "src/trainer_hill.o"
 	.include "src/rayquaza_scene.o"
 	.include "src/debug.o"
-<<<<<<< HEAD
-=======
 	.include "src/quests.o"
-	.include "src/day_night.o"
->>>>>>> 1db014db5... Merge branch 'unbound-quest-menu' of https://github.com/PokemonSanFran/pokeemerald
 	.include "src/pokedex_plus_hgss.o"
 	.include "src/battle_controller_player.o"
+<<<<<<< HEAD
+=======
+	.include "src/pokedex_plus_hgss.o"
+>>>>>>> 9ece7ed04711d5e602a1d74342825deec565b554

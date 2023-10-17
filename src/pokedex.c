@@ -14,9 +14,9 @@
 #include "overworld.h"
 #include "palette.h"
 #include "pokedex.h"
-#include "pokedex_plus_hgss.h"
 #include "pokedex_area_screen.h"
 #include "pokedex_cry_screen.h"
+#include "pokedex_plus_hgss.h"
 #include "scanline_effect.h"
 #include "sound.h"
 #include "sprite.h"
@@ -1590,15 +1590,12 @@ static void ResetPokedexView(struct PokedexView *pokedexView)
         pokedexView->unkArr3[i] = 0;
 }
 
-#define HGSS_DEX TRUE
-
 void CB2_OpenPokedex(void)
 {
-    if (HGSS_DEX)
-    {
-        CB2_OpenPokedexPlusHGSS();
-        return;
-    }
+#if POKEDEX_PLUS_HGSS == TRUE
+    CB2_OpenPokedexPlusHGSS();
+    return;
+#endif
 
     switch (gMain.state)
     {
@@ -3962,7 +3959,12 @@ static void HighlightSubmenuScreenSelectBarItem(u8 a, u16 b)
 
 u8 DisplayCaughtMonDexPage(u16 dexNum, u32 otId, u32 personality)
 {
-    u8 taskId = CreateTask(Task_DisplayCaughtMonDexPage, 0);
+    u8 taskId = 0;
+    #if POKEDEX_PLUS_HGSS
+        taskId = CreateTask(Task_DisplayCaughtMonDexPageHGSS, 0);
+    #else
+        taskId = CreateTask(Task_DisplayCaughtMonDexPage, 0);
+    #endif // POKEDEX_PLUS_HGSS
 
     gTasks[taskId].tState = 0;
     gTasks[taskId].tDexNum = dexNum;
@@ -4479,7 +4481,7 @@ static void PrintInfoSubMenuText(u8 windowId, const u8 *str, u8 left, u8 top)
     AddTextPrinterParameterized4(windowId, FONT_NORMAL, left, top, 0, 0, color, TEXT_SKIP_DRAW, str);
 }
 
-static void UnusedPrintNum(u8 windowId, u16 num, u8 left, u8 top)
+static void UNUSED UnusedPrintNum(u8 windowId, u16 num, u8 left, u8 top)
 {
     u8 str[4];
 
@@ -4513,7 +4515,7 @@ static u8 PrintCryScreenSpeciesName(u8 windowId, u16 num, u8 left, u8 top)
     return i;
 }
 
-static void UnusedPrintMonName(u8 windowId, const u8 *name, u8 left, u8 top)
+static void UNUSED UnusedPrintMonName(u8 windowId, const u8 *name, u8 left, u8 top)
 {
     u8 str[POKEMON_NAME_LENGTH + 1];
     u8 i;
@@ -4534,7 +4536,7 @@ static void UnusedPrintMonName(u8 windowId, const u8 *name, u8 left, u8 top)
 }
 
 // Unused in the English version, used to print height/weight in versions which use metric system.
-static void PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top)
+static void UNUSED PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top)
 {
     u8 str[6];
     bool8 outputted = FALSE;
@@ -4611,8 +4613,8 @@ static void DrawFootprint(u8 windowId, u16 dexNum)
     CopyToWindowPixelBuffer(windowId, footprint4bpp, sizeof(footprint4bpp), 0);
 }
 
-// Unused Ruby/Sapphire function.
-static void RS_DrawFootprint(u16 offset, u16 tileNum)
+// Ruby/Sapphire function.
+static void UNUSED RS_DrawFootprint(u16 offset, u16 tileNum)
 {
     *(u16 *)(VRAM + offset * 0x800 + 0x232) = 0xF000 + tileNum + 0;
     *(u16 *)(VRAM + offset * 0x800 + 0x234) = 0xF000 + tileNum + 1;
@@ -5135,8 +5137,8 @@ static void Task_SearchCompleteWaitForInput(u8 taskId)
 static void Task_SelectSearchMenuItem(u8 taskId)
 {
     u8 menuItem;
-    u16 *cursorPos;
-    u16 *scrollOffset;
+    s16 *cursorPos;
+    s16 *scrollOffset;
 
     DrawOrEraseSearchParameterBox(FALSE);
     menuItem = gTasks[taskId].tMenuItem;
@@ -5156,8 +5158,8 @@ static void Task_HandleSearchParameterInput(u8 taskId)
 {
     u8 menuItem;
     const struct SearchOptionText *texts;
-    u16 *cursorPos;
-    u16 *scrollOffset;
+    s16 *cursorPos;
+    s16 *scrollOffset;
     u16 maxOption;
     bool8 moved;
 
@@ -5474,8 +5476,8 @@ static void DrawOrEraseSearchParameterBox(bool8 erase)
 static void PrintSearchParameterText(u8 taskId)
 {
     const struct SearchOptionText *texts = sSearchOptions[gTasks[taskId].tMenuItem].texts;
-    const u16 *cursorPos = &gTasks[taskId].data[sSearchOptions[gTasks[taskId].tMenuItem].taskDataCursorPos];
-    const u16 *scrollOffset = &gTasks[taskId].data[sSearchOptions[gTasks[taskId].tMenuItem].taskDataScrollOffset];
+    const s16 *cursorPos = &gTasks[taskId].data[sSearchOptions[gTasks[taskId].tMenuItem].taskDataCursorPos];
+    const s16 *scrollOffset = &gTasks[taskId].data[sSearchOptions[gTasks[taskId].tMenuItem].taskDataScrollOffset];
     u16 i;
     u16 j;
 
@@ -5489,8 +5491,8 @@ static void PrintSearchParameterText(u8 taskId)
 
 static u8 GetSearchModeSelection(u8 taskId, u8 option)
 {
-    const u16 *cursorPos = &gTasks[taskId].data[sSearchOptions[option].taskDataCursorPos];
-    const u16 *scrollOffset = &gTasks[taskId].data[sSearchOptions[option].taskDataScrollOffset];
+    const s16 *cursorPos = &gTasks[taskId].data[sSearchOptions[option].taskDataCursorPos];
+    const s16 *scrollOffset = &gTasks[taskId].data[sSearchOptions[option].taskDataScrollOffset];
     u16 id = *cursorPos + *scrollOffset;
 
     switch (option)
@@ -5561,7 +5563,7 @@ static void SetDefaultSearchModeAndOrder(u8 taskId)
 static bool8 SearchParamCantScrollUp(u8 taskId)
 {
     u8 menuItem = gTasks[taskId].tMenuItem;
-    const u16 *scrollOffset = &gTasks[taskId].data[sSearchOptions[menuItem].taskDataScrollOffset];
+    const s16 *scrollOffset = &gTasks[taskId].data[sSearchOptions[menuItem].taskDataScrollOffset];
     u16 lastOption = sSearchOptions[menuItem].numOptions - 1;
 
     if (lastOption > MAX_SEARCH_PARAM_CURSOR_POS && *scrollOffset != 0)
@@ -5573,7 +5575,7 @@ static bool8 SearchParamCantScrollUp(u8 taskId)
 static bool8 SearchParamCantScrollDown(u8 taskId)
 {
     u8 menuItem = gTasks[taskId].tMenuItem;
-    const u16 *scrollOffset = &gTasks[taskId].data[sSearchOptions[menuItem].taskDataScrollOffset];
+    const s16 *scrollOffset = &gTasks[taskId].data[sSearchOptions[menuItem].taskDataScrollOffset];
     u16 lastOption = sSearchOptions[menuItem].numOptions - 1;
 
     if (lastOption > MAX_SEARCH_PARAM_CURSOR_POS && *scrollOffset < lastOption - MAX_SEARCH_PARAM_CURSOR_POS)

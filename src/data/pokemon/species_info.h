@@ -3375,7 +3375,11 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = STANDARD_FRIENDSHIP,
         .growthRate = GROWTH_MEDIUM_FAST,
         .eggGroups = { EGG_GROUP_AMORPHOUS, EGG_GROUP_AMORPHOUS},
-        .abilities = {ABILITY_LEVITATE, ABILITY_NEUTRALIZING_GAS, ABILITY_STENCH},
+        #if P_UPDATED_ABILITIES >= GEN_8
+            .abilities = {ABILITY_LEVITATE, ABILITY_NEUTRALIZING_GAS, ABILITY_STENCH},
+        #else
+            .abilities = {ABILITY_LEVITATE, ABILITY_NONE},
+        #endif
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = FALSE,
     },
@@ -3398,7 +3402,11 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = STANDARD_FRIENDSHIP,
         .growthRate = GROWTH_MEDIUM_FAST,
         .eggGroups = { EGG_GROUP_AMORPHOUS, EGG_GROUP_AMORPHOUS},
-        .abilities = {ABILITY_LEVITATE, ABILITY_NEUTRALIZING_GAS, ABILITY_STENCH},
+        #if P_UPDATED_ABILITIES >= GEN_8
+            .abilities = {ABILITY_LEVITATE, ABILITY_NEUTRALIZING_GAS, ABILITY_STENCH},
+        #else
+            .abilities = {ABILITY_LEVITATE, ABILITY_NONE},
+        #endif
         .bodyColor = BODY_COLOR_PURPLE,
         .noFlip = TRUE,
     },
@@ -7218,7 +7226,11 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = STANDARD_FRIENDSHIP,
         .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = { EGG_GROUP_FIELD, EGG_GROUP_GRASS},
-        .abilities = {ABILITY_CHLOROPHYLL, ABILITY_EARLY_BIRD, ABILITY_PICKPOCKET},
+        #if P_UPDATED_ABILITIES >= GEN_9
+            .abilities = {ABILITY_CHLOROPHYLL, ABILITY_WIND_RIDER, ABILITY_PICKPOCKET},
+        #else
+            .abilities = {ABILITY_CHLOROPHYLL, ABILITY_EARLY_BIRD, ABILITY_PICKPOCKET},
+        #endif
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
     },
@@ -9978,7 +9990,11 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = STANDARD_FRIENDSHIP,
         .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = { EGG_GROUP_WATER_1, EGG_GROUP_FIELD},
-        .abilities = {ABILITY_TORRENT, ABILITY_NONE, ABILITY_DEFIANT},
+        #if P_UPDATED_ABILITIES >= GEN_9
+            .abilities = {ABILITY_TORRENT, ABILITY_NONE, ABILITY_COMPETITIVE},
+        #else
+            .abilities = {ABILITY_TORRENT, ABILITY_NONE, ABILITY_DEFIANT},
+        #endif
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
     },
@@ -10000,7 +10016,11 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = STANDARD_FRIENDSHIP,
         .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = { EGG_GROUP_WATER_1, EGG_GROUP_FIELD},
-        .abilities = {ABILITY_TORRENT, ABILITY_NONE, ABILITY_DEFIANT},
+        #if P_UPDATED_ABILITIES >= GEN_9
+            .abilities = {ABILITY_TORRENT, ABILITY_NONE, ABILITY_COMPETITIVE},
+        #else
+            .abilities = {ABILITY_TORRENT, ABILITY_NONE, ABILITY_DEFIANT},
+        #endif
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
     },
@@ -10022,7 +10042,11 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = STANDARD_FRIENDSHIP,
         .growthRate = GROWTH_MEDIUM_SLOW,
         .eggGroups = { EGG_GROUP_WATER_1, EGG_GROUP_FIELD},
-        .abilities = {ABILITY_TORRENT, ABILITY_NONE, ABILITY_DEFIANT},
+        #if P_UPDATED_ABILITIES >= GEN_9
+            .abilities = {ABILITY_TORRENT, ABILITY_NONE, ABILITY_COMPETITIVE},
+        #else
+            .abilities = {ABILITY_TORRENT, ABILITY_NONE, ABILITY_DEFIANT},
+        #endif
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
     },
@@ -11759,7 +11783,11 @@ const struct SpeciesInfo gSpeciesInfo[] =
         #else
             .eggGroups = { EGG_GROUP_AMORPHOUS, EGG_GROUP_AMORPHOUS},
         #endif
-        .abilities = {ABILITY_STEADFAST, ABILITY_NONE, ABILITY_JUSTIFIED},
+        #if P_UPDATED_ABILITIES >= GEN_9
+            .abilities = {ABILITY_STEADFAST, ABILITY_SHARPNESS, ABILITY_JUSTIFIED},
+        #else
+            .abilities = {ABILITY_STEADFAST, ABILITY_NONE, ABILITY_JUSTIFIED},
+        #endif
         .bodyColor = BODY_COLOR_WHITE,
         .noFlip = FALSE,
     },
@@ -12049,10 +12077,10 @@ const struct SpeciesInfo gSpeciesInfo[] =
     {
         .baseHP        = 120,
         .baseAttack    = 70,
-        .baseDefense   = 120,
+        .baseDefense   = P_UPDATED_STATS >= GEN_9 ? 110 : 120,
         .baseSpeed     = 85,
         .baseSpAttack  = 75,
-        .baseSpDefense = 130,
+        .baseSpDefense = P_UPDATED_STATS >= GEN_9 ? 120 : 130,
         .types = { TYPE_PSYCHIC, TYPE_PSYCHIC},
         .catchRate = 3,
         .expYield = 270,
@@ -20666,7 +20694,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_ZACIAN] =
     {
         .baseHP        = 92,
-        .baseAttack    = 130,
+        .baseAttack    = P_UPDATED_STATS >= GEN_9 ? 120 : 130,
         .baseDefense   = 115,
         .baseSpeed     = 138,
         .baseSpAttack  = 80,
@@ -20689,7 +20717,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_ZAMAZENTA] =
     {
         .baseHP        = 92,
-        .baseAttack    = 130,
+        .baseAttack    = P_UPDATED_STATS >= GEN_9 ? 120 : 130,
         .baseDefense   = 115,
         .baseSpeed     = 138,
         .baseSpAttack  = 80,
@@ -24599,7 +24627,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_ZACIAN_CROWNED_SWORD] =
     {
         .baseHP        = 92,
-        .baseAttack    = 170,
+        .baseAttack    = P_UPDATED_STATS >= GEN_9 ? 150 : 170,
         .baseDefense   = 115,
         .baseSpeed     = 148,
         .baseSpAttack  = 80,
@@ -24622,11 +24650,11 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_ZAMAZENTA_CROWNED_SHIELD] =
     {
         .baseHP        = 92,
-        .baseAttack    = 130,
-        .baseDefense   = 145,
+        .baseAttack    = P_UPDATED_STATS >= GEN_9 ? 120 : 130,
+        .baseDefense   = P_UPDATED_STATS >= GEN_9 ? 140 : 145,
         .baseSpeed     = 128,
         .baseSpAttack  = 80,
-        .baseSpDefense = 145,
+        .baseSpDefense = P_UPDATED_STATS >= GEN_9 ? 140 : 145,
         .types = { TYPE_FIGHTING, TYPE_STEEL},
         .catchRate = 10,
         .expYield = 360,
